@@ -7,7 +7,7 @@ import com.aa.player.Dealer;
 import com.aa.player.Guest;
 import com.aa.player.Player;
 import com.aa.rule.consts.Match;
-import com.aa.rule.consts.Status;
+import com.aa.rule.consts.State;
 
 public class Rule {
 	
@@ -49,6 +49,18 @@ public class Rule {
 		}
 	}
 	
+	public Dealer getDealer() {
+		return dealer;
+	}
+
+	public Guest getGuest() {
+		return guest;
+	}
+
+	public CardCase getCardCase() {
+		return cardCase;
+	}
+
 	//
 	private void hit(Player p){
 		p.setCards(cardCase.drawCard());
@@ -58,13 +70,13 @@ public class Rule {
 	private Match isWin(Player p){
 		//상태 비교해서 게스트 승패 결정. Player.getStates
 		Match isc = Match.LOSE;
-		Status guestState = p.getStates();
-		if(guestState==Status.BURST){
+		State guestState = p.getState();
+		if(guestState==State.BURST){
 			isc = Match.LOSE;
-		}else if(guestState == Status.BLACKJACK){
+		}else if(guestState == State.BLACKJACK){
 			isc = Match.WIN;
 		}else{
-			Status dealerState = dealer.getStates();
+			State dealerState = dealer.getState();
 			switch (dealerState) {
 			case BURST:
 				isc = Match.WIN;
