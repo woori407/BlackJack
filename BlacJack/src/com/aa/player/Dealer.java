@@ -18,7 +18,6 @@ public class Dealer extends Player{
 		if(hands<17){
 			choice = 0;
 		}else{
-			System.out.println("카드의 합이 17이상으로 카드를 더 받을 수 없습니다.");
 			choice = 1;
 		}
 

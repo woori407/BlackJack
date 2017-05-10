@@ -23,8 +23,6 @@ public abstract class Player implements InterfacePlayer{
 	public abstract int nextAction();
 
 	
-
-	
 	public State getState() {
 		return state;
 	}
