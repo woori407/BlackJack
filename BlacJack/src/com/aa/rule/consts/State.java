@@ -1,5 +1,5 @@
 package com.aa.rule.consts;
 
-public enum Status {
+public enum State {
 	PLAYING, BLACKJACK, BURST, STAY
 }

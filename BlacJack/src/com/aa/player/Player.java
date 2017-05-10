@@ -3,11 +3,11 @@ package com.aa.player;
 import java.util.ArrayList;
 
 import com.aa.card.CardOne;
-import com.aa.rule.consts.Status;
+import com.aa.rule.consts.State;
 
 public abstract class Player implements InterfacePlayer{
 	protected ArrayList<CardOne> cards;
-	protected Status states = Status.PLAYING;
+	protected State state = State.PLAYING;
 	protected int hands;
 
 
@@ -34,12 +34,12 @@ public abstract class Player implements InterfacePlayer{
 	
 	
 	
-	public Status getStates() {
-		return states;
+	public State getState() {
+		return state;
 	}
 
-	public void setStates(Status states) {
-		this.states = states;
+	public void setState(State states) {
+		this.state = states;
 	}
 
 	public ArrayList<CardOne> getCards() {
