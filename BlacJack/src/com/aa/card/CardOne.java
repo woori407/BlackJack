@@ -2,7 +2,7 @@ package com.aa.card;
 
 public class CardOne {
 	public static final String[] SHAPE = {"◆","♥","♣","♠"};
-	public static final String[] NUMBER = {"A","2"};
+	public static final String[] NUMBER = { "A" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "10" , "J" , "Q" , "K"};
 	private String card;
 	
 	public CardOne(){
