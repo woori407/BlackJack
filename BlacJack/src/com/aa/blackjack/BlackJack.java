@@ -1,10 +1,13 @@
-package com.aa;
+package com.aa.blackjack;
 
 import java.util.Scanner;
 
+import com.aa.card.CardCase;
+import com.aa.rule.Rule;
+
 public class BlackJack {
 	
-	CardCase cardCase;
+	Rule rule;
 
 	public void play(){
 		
@@ -13,12 +16,7 @@ public class BlackJack {
 		String yN = "";
 		
 		while(true){
-			
-			
-			
-			
-			
-			
+			rule = new Rule();			
 			
 			//게임 종료될 즈음
 			System.out.println("게임을 계속 진행 하시겠습니까?");
@@ -30,8 +28,11 @@ public class BlackJack {
 						
 		}
 		
+		System.out.println("게임이 종료 되었습니다.");
+		
 	}
-
+	
+	//트루면 게임 끝 false면 다시 게임
 	private boolean isFinalGame(String yN) {
 		// TODO Auto-generated method stub
 		boolean isc = false;

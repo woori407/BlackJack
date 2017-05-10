@@ -1,4 +1,4 @@
-package com.aa;
+package com.aa.card;
 
 public class CardOne {
 	public static final String[] SHAPE = {"◆","♥","♣","♠"};

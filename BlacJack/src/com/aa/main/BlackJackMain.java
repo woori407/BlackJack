@@ -1,4 +1,6 @@
-package com.aa;
+package com.aa.main;
+
+import com.aa.blackjack.BlackJack;
 
 public class BlackJackMain {
 
