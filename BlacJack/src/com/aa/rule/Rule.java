@@ -41,6 +41,18 @@ public class Rule {
 		}
 	}
 	
+	public Dealer getDealer() {
+		return dealer;
+	}
+
+	public Guest getGuest() {
+		return guest;
+	}
+
+	public CardCase getCardCase() {
+		return cardCase;
+	}
+
 	//
 	private void hit(Player p){
 		
