@@ -18,6 +18,18 @@ public abstract class Player implements InterfacePlayer{
 	}
 
 
+	public void score(){
+		int count=0;
+		int sum=0;
+		for (CardOne card : cards) {
+			sum+=card.getValue();
+			if(card.getValue()==1)
+				count++;
+		}
+		if(count>0 && sum<12)
+			sum += 10;
+		hands = sum;
+	}
 
 	
 	public abstract int nextAction();
@@ -37,6 +49,7 @@ public abstract class Player implements InterfacePlayer{
 
 	public void setCards(CardOne card) {
 		this.cards.add(card);
+		score();
 	}
 
 	//	public abstract int nextAction();
