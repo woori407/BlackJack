@@ -16,7 +16,12 @@ public class BlackJack {
 		String yN = "";
 		
 		while(true){
-			rule = new Rule();			
+			rule = new Rule();		
+			
+			//1.셔플
+			//2.카드분배
+			//3...
+			
 			
 			//게임 종료될 즈음
 			System.out.println("게임을 계속 진행 하시겠습니까?");
