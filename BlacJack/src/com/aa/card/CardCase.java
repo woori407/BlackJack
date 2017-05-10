@@ -27,4 +27,10 @@ public class CardCase {
 				break;
 		}
 	}
+	
+	public CardOne drawCard(){
+		CardOne drawedCard = cardCase.get(0);
+		this.cardCase.remove(0);
+		return drawedCard;
+	}
 }
