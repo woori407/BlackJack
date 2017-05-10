@@ -3,7 +3,7 @@ package com.aa.player;
 import java.util.ArrayList;
 
 import com.aa.card.CardOne;
-import com.aa.rule.Status;
+import com.aa.rule.consts.Status;
 
 public abstract class Player implements InterfacePlayer{
 	protected ArrayList<CardOne> cards;
