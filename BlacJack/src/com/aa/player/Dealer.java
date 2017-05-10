@@ -14,8 +14,8 @@ public class Dealer extends Player{
 
 
 	@Override
-	public int nextAction(){
-		int choice = -1;
+	public int nextAction(int choice){
+//		int choice = -1;
 
 		if(hands<17){
 			choice = 0;
@@ -31,5 +31,6 @@ public class Dealer extends Player{
 			me=new Dealer();
 		return me;
 	}
+
 
 }

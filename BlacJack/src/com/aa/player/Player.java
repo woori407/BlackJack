@@ -37,7 +37,7 @@ public abstract class Player implements InterfacePlayer{
 	}
 
 	
-	public abstract int nextAction();
+	public abstract int nextAction(int choice);
 
 	
 	public State getState() {

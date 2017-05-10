@@ -27,24 +27,26 @@ public class BlackJack {
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
 		
+		//1.셔플 및 게임 초기화
+		cardCase.shuffleDeck();
+		playerList.clear();
+		playerList.add(guest);
+		playerList.add(dealer);
+		for (Player player : playerList) {
+			player.clearHands();
+		}
+		//2.카드분배
+		for (Player player : playerList) {
+			Rule.dealInitialCards(player);
+		}
+		
 		while(isKeepGoing){	
 			
-			//1.셔플 및 게임 초기화
-			cardCase.shuffleDeck();
-			playerList.clear();
-			playerList.add(guest);
-			playerList.add(dealer);
-			for (Player player : playerList) {
-				player.clearHands();
-			}
-			//2.카드분배
-			for (Player player : playerList) {
-				Rule.dealInitialCards(player);
-			}
+			
 			//3...
-			for (Player player : playerList) {
-				game(player);
-			}
+//			for (Player player : playerList) {
+//				game(player);
+//			}
 			
 			//게임 종료될 즈음
 //			System.out.println("게임을 계속 진행 하시겠습니까?(Y/N)");
@@ -89,6 +91,10 @@ public class BlackJack {
 			System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
 			System.out.printf("*************************************************************************************************\n");
 			
+//			for (Player player : playerList) {
+//				game(player);
+//			}
+			
 			command = scan.nextLine();			//사용자의 명령어를 받음
 			interpretCommand(command);			//사용자의 명령어를 해석함
 			
@@ -119,16 +125,29 @@ public class BlackJack {
 	
 	private String makeGuestCard() {
 		String gCard = "" +guest.getCards().get(0);
-		int size = guest.getCards().size()-1;
+		int size = guest.getCards().size();
 		
-		for (int i = 0; i < size; i++) {
-			gCard+=" □";
+		for (int i = 1; i < size; i++) {
+			gCard+=guest.getCards().get(i);
 		}
-		if(size>11)
-			gCard+="\t\t\t\t\t\t";
+		
+		if(size>10)
+			gCard+="";
+		else if(size>9)
+			gCard+="\t";
+		else if(size>8)
+			gCard+="\t\t";
 		else if(size>7)
-			gCard+="\t\t\t\t\t\t\t";
+			gCard+="\t\t\t";
+		else if(size>6)
+			gCard+="\t\t\t\t";
+		else if(size>5)
+			gCard+="\t\t\t\t\t";
+		else if(size>4)
+			gCard+="\t\t\t\t\t\t";
 		else if(size>3)
+			gCard+="\t\t\t\t\t\t\t";
+		else if(size>1)
 			gCard+="\t\t\t\t\t\t\t\t";
 		else
 			gCard+="\t\t\t\t\t\t\t\t\t";
@@ -153,6 +172,9 @@ public class BlackJack {
 		}else if(command.trim().compareToIgnoreCase("new")==0 || command.trim().compareToIgnoreCase("n")==0){
 			isKeepGoing = false;
 			returnVal = 1;		//1이면 새 게임
+		}else if(command.trim().compareToIgnoreCase("hit")==0 || command.trim().compareToIgnoreCase("h")==0){
+			
+		}else if(command.trim().compareToIgnoreCase("stay")==0 || command.trim().compareToIgnoreCase("s")==0){
 		}
 	}
 	
@@ -161,11 +183,9 @@ public class BlackJack {
 			System.out.println("");
 	}
 	
-	private void game(Player p){
-		while (p.getState()==State.PLAYING) {
-			Rule.respondPlayer(p, p.nextAction());
+	private void game(Player p , int choice){
+		if(p.getState()==State.PLAYING) {
+			Rule.respondPlayer(p, p.nextAction(choice));
 		}
-		if(p.equals(guest))
-			System.out.println("You "+p.getState());
 	}
 }
