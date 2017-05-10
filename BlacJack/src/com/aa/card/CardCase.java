@@ -13,7 +13,6 @@ public class CardCase {
 
 	private CardCase() {
 		cardCase = new ArrayList<CardOne>();
-		shuffleDeck();
 	}
 	
 	private void inputCard(){
@@ -41,7 +40,7 @@ public class CardCase {
 	}
 	
 	public static CardCase getInstance(){
-		if(me!=null)
+		if(me==null)
 			me = new CardCase();
 		return me;
 	}

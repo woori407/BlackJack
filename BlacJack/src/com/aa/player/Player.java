@@ -53,7 +53,7 @@ public abstract class Player implements InterfacePlayer{
 	}
 
 	public void setCards(CardOne card) {
-		this.cards.add(card);
+		cards.add(card);
 		score();
 	}
 
@@ -66,6 +66,12 @@ public abstract class Player implements InterfacePlayer{
 			}
 		}
 		return isc;
+	}
+	
+	public void clearHands(){
+		cards.clear();
+		hands=0;
+		state=State.PLAYING;
 	}
 	//	public abstract int nextAction();
 }

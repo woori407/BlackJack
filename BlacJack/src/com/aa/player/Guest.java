@@ -18,10 +18,11 @@ public class Guest extends Player{
 		int choice = -1;
 
 		Scanner scan = new Scanner(System.in);
-		choice = scan.nextInt();
 
 		while(true){
+			System.out.println("your card : " + cards+"score : "+hands);
 			System.out.println("Hit을 원하시면 0입력 - Stay를 원하시면 1입력");
+			choice = scan.nextInt();
 			if(choice == 1){
 				break;
 			}else if(choice ==0){
