@@ -28,7 +28,9 @@ public class CardCase {
 		}
 	}
 	
-	public void remove(int index){
-		this.cardCase.remove(index);
+	public CardOne drawCard(){
+		CardOne drawed = cardCase.get(0);
+		this.cardCase.remove(0);
+		return drawed;
 	}
 }
