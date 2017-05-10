@@ -22,17 +22,8 @@ public abstract class Player implements InterfacePlayer{
 	
 	public abstract int nextAction();
 
-	public int receiveCards(int choice){
-		
-		if(choice == 0){
-			System.out.println("카드를 ");
-			this.getCards();
-		}
-		return choice;
-	}
+	
 
-	
-	
 	
 	public Status getStates() {
 		return states;
