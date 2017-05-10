@@ -16,8 +16,8 @@ public class Dealer extends Player{
 	@Override
 	public int nextAction(int choice){
 //		int choice = -1;
-
-		if(hands<17){
+//		score();
+		if(me.hands<=17){
 			choice = 0;
 		}else{
 			choice = 1;

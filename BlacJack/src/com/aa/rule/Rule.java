@@ -24,7 +24,7 @@ public class Rule {
 	
 	//플레이어의 선택에 대한 룰 클래스의 응답
 	public static void respondPlayer(Player p, int choice){
-		setPlayerState(p);
+//		setPlayerState(p);
 		if(p.getState()==State.PLAYING){
 			switch (choice) {
 			case 0:
@@ -42,6 +42,9 @@ public class Rule {
 				//예외처리
 				break;
 			}
+			if(p.getState()==State.STAY)
+				return;
+			setPlayerState(p);
 		}
 	}
 

@@ -23,7 +23,7 @@ public abstract class Player implements InterfacePlayer{
 	}
 
 
-	private void score(){
+	protected void score(){
 		int count=0;
 		int sum=0;
 		for (CardOne card : cards) {
