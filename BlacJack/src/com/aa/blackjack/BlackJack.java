@@ -55,21 +55,29 @@ public class BlackJack {
 //				continue;
 			
 			//오픈카드를 보여주고 히든 카드 수를 명시적으로 표현
-			String dealersCard = "" + dealer.getCards().get(0);
-			String guestsCard = "";
+
+			String dealersCard = new String(makeDealersCard());
+			String guestsCard = new String(makeGuestCard());
+//			String dealersCard = "" + rule.getDealer().getCards().get(0);
+//			String guestsCard = "" + rule.getGuest().getCards().get(0);
 			
-			for (int i = 0; i < dealer.getCards().size()-1; i++) {
-				dealersCard+=" ■";
-			}
-			for (int i = 0; i < guest.getCards().size(); i++) {
-				guestsCard+=" "+guest.getCards().get(i);
-			}
+//			for (int i = 0; i < rule.getDealer().getCards().size()-1; i++) {
+//				dealersCard+=" ■";
+//			}
+//			for (int i = 0; i < rule.getGuest().getCards().size()-1; i++) {
+//				guestsCard+=" □";
+//			}
+//			dealersCard+="\t\t\t\t\t\t\t\t\t";
+//			guestsCard+="\t\t\t\t\t\t\t\t\t";
+//			String temp =  "" + rule.getGuest().getCards().get(0) + " ■ ■ ■ ■" + "\t\t\t\t\t\t\t\t\t";
+			
+
 			
 			System.out.printf("*************************************************************************************************\n");
 			System.out.printf("*\t\t\t\tWelcome to BlackJack Game!\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*\tDealer's card : %s\t\t\t\t\t\t\t\t\t*\n" , dealersCard);//딜러의 카드
-			System.out.printf("*\tYour card : %s\t\t\t\t\t\t\t\t\t*\n" , guestsCard);//게스트의  카드
+			System.out.printf("*\tDealer's card : %s*\n" , dealersCard);//딜러의 카드
+			System.out.printf("*\tYour card : %s*\n" , guestsCard);//게스트의  카드
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
@@ -91,7 +99,45 @@ public class BlackJack {
 		return returnVal;
 		
 	}
+	private String makeDealersCard() {
+		String dCard = "" + dealer.getCards().get(0);
+		int size = dealer.getCards().size()-1;
+		
+		for (int i = 0; i < size; i++) {
+			dCard+=" ■";
+		}
+		if(size>9)
+			dCard+="\t\t\t\t\t\t";
+		else if(size>5)
+			dCard+="\t\t\t\t\t\t\t";
+		else if(size>1)
+			dCard+="\t\t\t\t\t\t\t\t";
+		else
+			dCard+="\t\t\t\t\t\t\t\t\t";
+		return dCard;
+	}
 	
+	private String makeGuestCard() {
+		String gCard = "" +guest.getCards().get(0);
+		int size = guest.getCards().size()-1;
+		
+		for (int i = 0; i < size; i++) {
+			gCard+=" □";
+		}
+		if(size>11)
+			gCard+="\t\t\t\t\t\t";
+		else if(size>7)
+			gCard+="\t\t\t\t\t\t\t";
+		else if(size>3)
+			gCard+="\t\t\t\t\t\t\t\t";
+		else
+			gCard+="\t\t\t\t\t\t\t\t\t";
+
+		return gCard;
+	}
+
+	
+
 	//트루면 게임 끝 false면 다시 게임
 //	private boolean isFinalGame(String yN) {
 //		// TODO Auto-generated method stub
