@@ -7,19 +7,33 @@ import com.aa.rule.Status;
 
 public abstract class Player implements InterfacePlayer{
 	protected ArrayList<CardOne> cards;
-	private Status states = Status.PLAYING;
-	
-	
-	private static final int CARD_POINT = 16;
-	
-	
+	protected Status states = Status.PLAYING;
+	protected int hands;
+
+
+
 	public Player() {
 		cards = new ArrayList<CardOne>();
-		
-		// TODO Auto-generated constructor stub
+		hands=0;
 	}
 
 
+
+	
+	public abstract int nextAction();
+
+	public int receiveCards(int choice){
+		
+		if(choice == 0){
+			System.out.println("카드를 ");
+			this.getCards();
+		}
+		return choice;
+	}
+
+	
+	
+	
 	public Status getStates() {
 		return states;
 	}
@@ -36,5 +50,5 @@ public abstract class Player implements InterfacePlayer{
 		this.cards.add(card);
 	}
 
-//	public abstract int nextAction();
+	//	public abstract int nextAction();
 }
