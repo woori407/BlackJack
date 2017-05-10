@@ -5,14 +5,15 @@ import java.util.ArrayList;
 public class CardCase {
 
 	private ArrayList<CardOne> cardCase;
+	private static CardCase me = null;
 
 	public ArrayList<CardOne> getCardCase() {
 		return cardCase;
 	}
 
-	public CardCase() {
+	private CardCase() {
 		cardCase = new ArrayList<CardOne>();
-		inputCard();
+		shuffleDeck();
 	}
 	
 	private void inputCard(){
@@ -32,5 +33,16 @@ public class CardCase {
 		CardOne drawedCard = cardCase.get(0);
 		this.cardCase.remove(0);
 		return drawedCard;
+	}
+	
+	public void shuffleDeck(){
+		cardCase.clear();
+		inputCard();
+	}
+	
+	public static CardCase getInstance(){
+		if(me!=null)
+			me = new CardCase();
+		return me;
 	}
 }

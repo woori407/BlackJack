@@ -18,7 +18,12 @@ public abstract class Player implements InterfacePlayer{
 	}
 
 
-	public void score(){
+	public int getHands() {
+		return hands;
+	}
+
+
+	private void score(){
 		int count=0;
 		int sum=0;
 		for (CardOne card : cards) {
@@ -52,5 +57,15 @@ public abstract class Player implements InterfacePlayer{
 		score();
 	}
 
+	public boolean hasAce(){
+		boolean isc = false;
+		for (CardOne cardOne : cards) {
+			if(cardOne.getValue()==1){
+				isc=true;
+				break;
+			}
+		}
+		return isc;
+	}
 	//	public abstract int nextAction();
 }

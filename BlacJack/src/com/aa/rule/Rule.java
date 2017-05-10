@@ -18,7 +18,7 @@ public class Rule {
 	public Rule(){
 		dealer = new Dealer();
 		guest = new Guest();
-		cardCase = new CardCase();
+		cardCase = CardCase.getInstance();
 	}
 	
 	//시작시 카드 분배
@@ -38,13 +38,13 @@ public class Rule {
 			break;
 		case 1:
 			//stay
+			stay(p);
 			break;
 		case 2:
 			//double down
 //			break;
 		default:
 			//예외처리
-			System.out.println("잘못된 입력입니다. 다시 입력해주세요");
 			break;
 		}
 	}
@@ -64,6 +64,7 @@ public class Rule {
 	//
 	private void hit(Player p){
 		p.setCards(cardCase.drawCard());
+		setPlayerState(p);
 	}
 	
 	//승패결정. true면 승리 enum 승무패
@@ -85,7 +86,7 @@ public class Rule {
 				isc=Match.LOSE;
 				break;
 			case STAY:
-				isc = compareHands();
+				isc = compareHands(p);
 				break;
 			default:
 				break;
@@ -94,10 +95,23 @@ public class Rule {
 		return isc;
 	}
 
-	private Match compareHands() {
+	private Match compareHands(Player p) {
 		Match isc = Match.LOSE;
-		/*isc = dealer.getHands()>guest.getHands()?Match.LOSE:
-			dealer.getHands()<guest.getHands()?Match.WIN:Match.DRAW;*/		
+		isc = dealer.getHands()>p.getHands()?Match.LOSE:
+			dealer.getHands()<p.getHands()?Match.WIN:Match.DRAW;		
 		return isc;
+	}
+	
+	private void setPlayerState(Player p){
+		if(p.getCards().size()==2 && p.hasAce())
+			p.setState(State.BLACKJACK);
+		if(p.getHands()>21)
+			p.setState(State.BURST);
+		else
+			p.setState(State.PLAYING);
+	}
+	
+	private void stay(Player p){
+		p.setState(State.STAY);
 	}
 }

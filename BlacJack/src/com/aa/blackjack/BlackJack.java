@@ -2,7 +2,6 @@ package com.aa.blackjack;
 
 import java.util.Scanner;
 
-import com.aa.card.CardCase;
 import com.aa.rule.Rule;
 
 public class BlackJack {
@@ -36,13 +35,13 @@ public class BlackJack {
 			
 			//오픈카드를 보여주고 히든 카드 수를 명시적으로 표현
 			String dealersCard = "" + rule.getDealer().getCards().get(0);
-			String guestsCard = "" + rule.getGuest().getCards().get(0);
+			String guestsCard = "";
 			
 			for (int i = 0; i < rule.getDealer().getCards().size()-1; i++) {
 				dealersCard+=" ■";
 			}
-			for (int i = 0; i < rule.getGuest().getCards().size()-1; i++) {
-				guestsCard+=" □";
+			for (int i = 0; i < rule.getGuest().getCards().size(); i++) {
+				guestsCard+=" "+rule.getGuest().getCards().get(i);
 			}
 			
 			System.out.printf("*************************************************************************************************\n");

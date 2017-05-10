@@ -3,8 +3,6 @@ package com.aa.player;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.aa.card.CardOne;
-
 public class Guest extends Player{
 
 	public Guest() {
