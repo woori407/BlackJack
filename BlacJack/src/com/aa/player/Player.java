@@ -11,5 +11,9 @@ public abstract class Player implements InterfacePlayer{
 		return cards;
 	}
 
+	public void setCards(CardOne card) {
+		this.cards.add(card);
+	}
+
 //	public abstract int nextAction();
 }

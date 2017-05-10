@@ -27,4 +27,8 @@ public class CardCase {
 				break;
 		}
 	}
+	
+	public void remove(int index){
+		this.cardCase.remove(index);
+	}
 }

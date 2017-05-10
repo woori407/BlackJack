@@ -17,14 +17,14 @@ public class Rule {
 	}
 	
 	public void dealInitialCards(){
-		dealer.getCards().add(cardCase.getCardCase().get(0));
-		cardCase.getCardCase().remove(0);
-		guest.getCards().add(cardCase.getCardCase().get(0));
-		cardCase.getCardCase().remove(0);
-		dealer.getCards().add(cardCase.getCardCase().get(0));
-		cardCase.getCardCase().remove(0);
-		guest.getCards().add(cardCase.getCardCase().get(0));
-		cardCase.getCardCase().remove(0);
+		dealer.setCards(cardCase.getCardCase().get(0));
+		cardCase.remove(0);
+		guest.setCards(cardCase.getCardCase().get(0));
+		cardCase.remove(0);
+		dealer.setCards(cardCase.getCardCase().get(0));
+		cardCase.remove(0);
+		guest.setCards(cardCase.getCardCase().get(0));
+		cardCase.remove(0);
 	}
 
 }
