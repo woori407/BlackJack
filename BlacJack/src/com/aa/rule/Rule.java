@@ -24,28 +24,30 @@ public class Rule {
 	
 	//플레이어의 선택에 대한 룰 클래스의 응답
 	public static void respondPlayer(Player p, int choice){
-		switch (choice) {
-		case 0:
-			//hit
-			hit(p);
-			break;
-		case 1:
-			//stay
-			stay(p);
-			break;
-		case 2:
-			//double down
-//			break;
-		default:
-			//예외처리
-			break;
+		setPlayerState(p);
+		if(p.getState()==State.PLAYING){
+			switch (choice) {
+			case 0:
+				//hit
+				hit(p);
+				break;
+			case 1:
+				//stay
+				stay(p);
+				break;
+			case 2:
+				//double down
+//				break;
+			default:
+				//예외처리
+				break;
+			}
 		}
 	}
 
 	//
 	private static void hit(Player p){
 		p.setCards(cardCase.drawCard());
-		setPlayerState(p);
 	}
 	
 	//승패결정. true면 승리 enum 승무패
@@ -84,8 +86,9 @@ public class Rule {
 	}
 	
 	private static void setPlayerState(Player p){
-		if(p.getCards().size()==2 && p.hasAce())
+		if(p.getCards().size()==2 && p.getHands()==21 && p.hasAce()){
 			p.setState(State.BLACKJACK);
+		}
 		if(p.getHands()>21)
 			p.setState(State.BURST);
 		else
