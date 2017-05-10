@@ -38,4 +38,16 @@ public class CardOne {
 	public String toString() {
 		return "[" + card + "]";
 	}
+	
+	public int getValue(){
+		int val=0;
+		int point = Character.getNumericValue(card.charAt(1));
+		if(point>1&&point<10)
+			val = point;
+		else if(point==10)
+			val = 1;
+		else
+			val = 10;
+		return val;
+	}
 }
