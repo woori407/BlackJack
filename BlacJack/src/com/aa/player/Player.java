@@ -17,10 +17,6 @@ public abstract class Player implements InterfacePlayer{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void receiveCard(){
-		
-	}
-
 
 
 	public ArrayList<CardOne> getCards() {
