@@ -29,8 +29,8 @@ public class CardCase {
 	}
 	
 	public CardOne drawCard(){
-		CardOne drawed = cardCase.get(0);
+		CardOne drawedCard = cardCase.get(0);
 		this.cardCase.remove(0);
-		return drawed;
+		return drawedCard;
 	}
 }
