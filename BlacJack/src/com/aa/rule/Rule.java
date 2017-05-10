@@ -11,26 +11,19 @@ import com.aa.rule.consts.State;
 
 public class Rule {
 	
-	Dealer dealer;
-	Guest guest;
-	CardCase cardCase;
+	private static Dealer dealer = Dealer.getInstance();
+	private static CardCase cardCase = CardCase.getInstance();
 	
-	public Rule(){
-		dealer = new Dealer();
-		guest = new Guest();
-		cardCase = new CardCase();
+	private Rule(){
 	}
-	
 	//시작시 카드 분배
-	public void dealInitialCards(){
-		dealer.setCards(cardCase.drawCard());
-		guest.setCards(cardCase.drawCard());
-		dealer.setCards(cardCase.drawCard());
-		guest.setCards(cardCase.drawCard());
+	public static void dealInitialCards(Player p){
+		p.setCards(cardCase.drawCard());
+		p.setCards(cardCase.drawCard());
 	}
 	
 	//플레이어의 선택에 대한 룰 클래스의 응답
-	public void respondPlayer(Player p, int choice){
+	public static void respondPlayer(Player p, int choice){
 		switch (choice) {
 		case 0:
 			//hit
@@ -38,36 +31,25 @@ public class Rule {
 			break;
 		case 1:
 			//stay
+			stay(p);
 			break;
 		case 2:
 			//double down
 //			break;
 		default:
 			//예외처리
-			System.out.println("잘못된 입력입니다. 다시 입력해주세요");
 			break;
 		}
 	}
-	
-	public Dealer getDealer() {
-		return dealer;
-	}
-
-	public Guest getGuest() {
-		return guest;
-	}
-
-	public CardCase getCardCase() {
-		return cardCase;
-	}
 
 	//
-	private void hit(Player p){
+	private static void hit(Player p){
 		p.setCards(cardCase.drawCard());
+		setPlayerState(p);
 	}
 	
 	//승패결정. true면 승리 enum 승무패
-	private Match isWin(Player p){
+	private static Match isWin(Player p){
 		//상태 비교해서 게스트 승패 결정. Player.getStates
 		Match isc = Match.LOSE;
 		State guestState = p.getState();
@@ -85,7 +67,7 @@ public class Rule {
 				isc=Match.LOSE;
 				break;
 			case STAY:
-				isc = compareHands();
+				isc = compareHands(p);
 				break;
 			default:
 				break;
@@ -94,10 +76,23 @@ public class Rule {
 		return isc;
 	}
 
-	private Match compareHands() {
+	private static Match compareHands(Player p) {
 		Match isc = Match.LOSE;
-		/*isc = dealer.getHands()>guest.getHands()?Match.LOSE:
-			dealer.getHands()<guest.getHands()?Match.WIN:Match.DRAW;*/		
+		isc = dealer.getHands()>p.getHands()?Match.LOSE:
+			dealer.getHands()<p.getHands()?Match.WIN:Match.DRAW;		
 		return isc;
+	}
+	
+	private static void setPlayerState(Player p){
+		if(p.getCards().size()==2 && p.hasAce())
+			p.setState(State.BLACKJACK);
+		if(p.getHands()>21)
+			p.setState(State.BURST);
+		else
+			p.setState(State.PLAYING);
+	}
+	
+	private static void stay(Player p){
+		p.setState(State.STAY);
 	}
 }

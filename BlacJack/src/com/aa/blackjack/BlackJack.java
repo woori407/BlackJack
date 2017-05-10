@@ -1,13 +1,20 @@
 package com.aa.blackjack;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.aa.card.CardCase;
+import com.aa.player.Dealer;
+import com.aa.player.Guest;
+import com.aa.player.Player;
 import com.aa.rule.Rule;
+import com.aa.rule.consts.State;
 
 public class BlackJack {
-	
-	Rule rule;
+		ArrayList<Player> playerList = new ArrayList<Player>();
+	Dealer dealer;
+	Guest guest;
+	CardCase cardCase;
 	boolean isKeepGoing = true;
 	int returnVal = 0;
 
@@ -16,15 +23,28 @@ public class BlackJack {
 		@SuppressWarnings("unused")
 		Scanner scan = new Scanner(System.in);
 		String command = "";
-		rule = new Rule();	
-		rule.dealInitialCards();	//카드 셔플
+		guest= new Guest();
+		dealer = Dealer.getInstance();
+		cardCase = CardCase.getInstance();
 		
 		while(isKeepGoing){	
 			
-			//1.셔플
+			//1.셔플 및 게임 초기화
+			cardCase.shuffleDeck();
+			playerList.clear();
+			playerList.add(guest);
+			playerList.add(dealer);
+			for (Player player : playerList) {
+				player.clearHands();
+			}
 			//2.카드분배
+			for (Player player : playerList) {
+				Rule.dealInitialCards(player);
+			}
 			//3...
-			
+			for (Player player : playerList) {
+				game(player);
+			}
 			
 			//게임 종료될 즈음
 //			System.out.println("게임을 계속 진행 하시겠습니까?(Y/N)");
@@ -35,7 +55,7 @@ public class BlackJack {
 //				continue;
 			
 			//오픈카드를 보여주고 히든 카드 수를 명시적으로 표현
-			
+
 			String dealersCard = new String(makeDealersCard());
 			String guestsCard = new String(makeGuestCard());
 //			String dealersCard = "" + rule.getDealer().getCards().get(0);
@@ -51,6 +71,7 @@ public class BlackJack {
 //			guestsCard+="\t\t\t\t\t\t\t\t\t";
 //			String temp =  "" + rule.getGuest().getCards().get(0) + " ■ ■ ■ ■" + "\t\t\t\t\t\t\t\t\t";
 			
+
 			
 			System.out.printf("*************************************************************************************************\n");
 			System.out.printf("*\t\t\t\tWelcome to BlackJack Game!\t\t\t\t\t*\n");
@@ -61,8 +82,8 @@ public class BlackJack {
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*\t\t\t\t\t\t\t\t\tYour score : %d\t\t*\n" , 21);//점수표시
-			System.out.printf("*\t\t\t\t\t\t\t\t\tstate : %s\t\t*\n" , "Playing");//상태표시
+			System.out.printf("*\t\t\t\t\t\t\t\t\tYour score : %d\t\t*\n" , guest.getHands());//점수표시
+			System.out.printf("*\t\t\t\t\t\t\t\t\tstate : %s\t\t*\n" , guest.getState());//상태표시
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
@@ -79,8 +100,8 @@ public class BlackJack {
 		
 	}
 	private String makeDealersCard() {
-		String dCard = "" + rule.getDealer().getCards().get(0);
-		int size = rule.getDealer().getCards().size()-1;
+		String dCard = "" + dealer.getCards().get(0);
+		int size = dealer.getCards().size()-1;
 		
 		for (int i = 0; i < size; i++) {
 			dCard+=" ■";
@@ -97,8 +118,8 @@ public class BlackJack {
 	}
 	
 	private String makeGuestCard() {
-		String gCard = "" + rule.getGuest().getCards().get(0);
-		int size = rule.getGuest().getCards().size()-1;
+		String gCard = "" +guest.getCards().get(0);
+		int size = guest.getCards().size()-1;
 		
 		for (int i = 0; i < size; i++) {
 			gCard+=" □";
@@ -138,5 +159,13 @@ public class BlackJack {
 	public static void clearScreen() {
 		for (int i = 0; i < 80; i++)
 			System.out.println("");
+	}
+	
+	private void game(Player p){
+		while (p.getState()==State.PLAYING) {
+			Rule.respondPlayer(p, p.nextAction());
+		}
+		if(p.equals(guest))
+			System.out.println("You "+p.getState());
 	}
 }

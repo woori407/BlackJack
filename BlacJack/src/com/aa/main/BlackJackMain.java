@@ -1,6 +1,8 @@
 package com.aa.main;
 
 import com.aa.blackjack.BlackJack;
+import com.aa.card.CardCase;
+import com.aa.player.Guest;
 
 public class BlackJackMain {
 
@@ -12,7 +14,6 @@ public class BlackJackMain {
 		}
 		
 		System.out.println("게임이 종료 되었습니다.");
-
 	}
 
 }

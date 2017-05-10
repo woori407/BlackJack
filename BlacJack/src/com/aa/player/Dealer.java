@@ -5,8 +5,10 @@ public class Dealer extends Player{
 
 	//0:힛트	1:스테이
 
+	private static Dealer me;
+	
 
-	public Dealer() {
+	private Dealer() {
 		super();
 	}
 
@@ -22,6 +24,12 @@ public class Dealer extends Player{
 		}
 
 		return choice;
+	}
+	
+	public static Dealer getInstance(){
+		if(me==null)
+			me=new Dealer();
+		return me;
 	}
 
 }
