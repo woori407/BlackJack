@@ -4,12 +4,22 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Guest extends Player{
+	
+	int budget = 1500;		//소지금
+	int betting = 0;		//현재 베팅 금액
+
+	
 
 	public Guest() {
 		super();
 	}
 
-
+	public void betting(){
+		System.out.printf("How much would you bet(you budget : %d) :" , budget);
+		Scanner scan = new Scanner(System.in);
+		betting = scan.nextInt();
+		budget-=betting;
+	}
 
 	@Override
 	public int nextAction(int choice){
@@ -33,5 +43,21 @@ public class Guest extends Player{
 //		}
 
 		return choice;
+	}
+	
+	public int getBudget() {
+		return budget;
+	}
+
+	public void setBudget(int budget) {
+		this.budget = budget;
+	}
+	
+	public int getBetting() {
+		return betting;
+	}
+
+	public void setBetting(int betting) {
+		this.betting = betting;
 	}
 }

@@ -13,19 +13,19 @@ import com.aa.rule.consts.State;
 public class BlackJack {
 	ArrayList<Player> playerList = new ArrayList<Player>();
 	Dealer dealer;
-	Guest guest;
+//	Guest guest;
 	CardCase cardCase;
 	boolean isKeepGoing = true;
 	int returnVal = 0;
 	int index;
 	boolean end;
 
-	public int play(){				//반환 값 0: 정상 종료 	1: 새로운 게임
-
+	public int play(Guest guest){				//반환 값 0: 정상 종료 	1: 새로운 게임
+		
 		@SuppressWarnings("unused")
 		Scanner scan = new Scanner(System.in);
 		String command = "";
-		guest= new Guest();
+//		guest= new Guest();
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
 		index = 0;
@@ -45,11 +45,11 @@ public class BlackJack {
 
 		//		while(isKeepGoing){	
 		for (; index < playerList.size(); index++) {
-			Player p;
+			Guest p;
 			if(index==playerList.size()-1)
-				p = playerList.get(index-1);
+				p = (Guest)playerList.get(index-1);
 			else
-				p = playerList.get(index);
+				p = (Guest)playerList.get(index);
 			//모든 게스트가 PLAYING 상태가 아님을 확인하는 변수. true:모든 게스트 state!=PLAYING
 			end = true;
 
@@ -87,17 +87,22 @@ public class BlackJack {
 		return returnVal;
 
 	}
-	private void print(Player p, boolean end) {
+	private void print(Guest p, boolean end) {
 		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
 		String dCardResult = "\t\t\t\t\t\t\t\t\t\t\t\t";
 		String dealersCard = new String(makeDealersCard());
 		String guestsCard = new String(makeGuestCard(p));
 
 
-		if(p.getState()==State.BLACKJACK )
+		if(p.getState()==State.BLACKJACK ){
 			result = "\t\t\tBlackJack! You win!";
-		else if(dealer.getState()==State.BLACKJACK )
+			p.setBudget(p.getBudget() + p.getBetting()*2);
+			p.setBetting(0);
+		}
+		else if(dealer.getState()==State.BLACKJACK ){
 			result = "\t\t\tBlackJack! You lose!";
+			p.setBetting(0);
+		}
 		else if(end && dealer.getState()!=State.PLAYING){
 			result = new String(makeResultStr(p));
 			dCardResult = new String(makeDCardResultStr());
@@ -119,6 +124,7 @@ public class BlackJack {
 		System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
 		System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
 		System.out.printf("*************************************************************************************************\n");
+		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
 
 		if(p.getState()==State.PLAYING)
 			System.out.println("Hit(H/HIT) Stay(S/Stay):");
@@ -147,37 +153,46 @@ public class BlackJack {
 		else if(size>6)
 			result+="\t\t\t\t\t\t";
 		else if(size>5)
-			result+="\t\t\t\t\t\t\t";
+			result+="\t\t\t\t\t\t";
 		else if(size>4)
 			result+="\t\t\t\t\t\t\t";
 		else if(size>3)
-			result+="\t\t\t\t\t\t\t\t";
+			result+="\t\t\t\t\t\t\t";
 		else if(size>2)
 			result+="\t\t\t\t\t\t\t\t";
 		else
-			result+="\t\t\t\t\t\t\t\t\t";
-
+			result+="\t\t\t\t\t\t\t\t";
 		return result;
 	}
-	private String makeResultStr(Player guest) {
+	
+	private String makeResultStr(Guest guest) {
 		String result =  "\tresult : " ;
 
 		int dScore = dealer.getHands();
 		int gScore = guest.getHands();
 
-		if(guest.getState()==State.BURST)
+		if(guest.getState()==State.BURST){
 			result += "You lose!";
-		else{
+			guest.setBetting(0);
+		}else{
 			int dGap = 21-dScore;
 			int gGap = 21-gScore;
-			if(dGap<0)
+			if(dGap<0){
 				result += "You win!";
-			else if(dGap - gGap>0)
+				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+				guest.setBetting(0);
+			}else if(dGap - gGap>0){
 				result += "You win!";
-			else if(dGap - gGap<0)
+				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+				guest.setBetting(0);
+			}else if(dGap - gGap<0){
 				result += "You lose!";
-			else
+				guest.setBetting(0);
+			}else{
 				result += "Draw~~~!";
+				guest.setBudget(guest.getBudget() + guest.getBetting());
+				guest.setBetting(0);
+			}
 		}
 
 		result=result + "\tDealer's score : " + dealer.getHands() + "[" + dealer.getState() + "]" + "\t\t\t\t\t";
@@ -202,7 +217,7 @@ public class BlackJack {
 		return dCard;
 	}
 
-	private String makeGuestCard(Player guest) {
+	private String makeGuestCard(Guest guest) {
 		String gCard = "" +guest.getCards().get(0);
 		int size = guest.getCards().size();
 
