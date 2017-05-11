@@ -100,10 +100,12 @@ public class BlackJack {
 			result = "\t\t\tBlackJack! You win!";
 //			p.setBudget(p.getBudget() + p.getBetting()*2);
 //			p.setBetting(0);
+//			guestBudgetControl(p,2);
 		}
 		else if(dealer.getState()==State.BLACKJACK ){
 //			result = "\t\t\tBlackJack! You lose!";
 //			p.setBetting(0);
+//			guestBudgetControl(p,0);
 		}
 		else if(end && dealer.getState()!=State.PLAYING){
 			result = new String(makeResultStr(p));
