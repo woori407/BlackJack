@@ -26,6 +26,8 @@ public class BlackJack {
 		guest= new Guest();
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
+		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
+		String dCardResult = "\t\t\t\t\t\t\t\t\t\t\t\t";
 		
 		//1.셔플 및 게임 초기화
 		cardCase.shuffleDeck();
@@ -74,7 +76,7 @@ public class BlackJack {
 //			guestsCard+="\t\t\t\t\t\t\t\t\t";
 //			String temp =  "" + rule.getGuest().getCards().get(0) + " ■ ■ ■ ■" + "\t\t\t\t\t\t\t\t\t";
 			
-			if(playerList.get(0).getState()==State.STAY){
+			if(playerList.get(0).getState()!=State.PLAYING){
 //				System.out.println("dsds");
 				while(playerList.get(1).getState()==State.PLAYING) {
 					Rule.respondPlayer(playerList.get(1),playerList.get(1).nextAction(-1));
@@ -84,15 +86,21 @@ public class BlackJack {
 //						System.out.println(playerList.get(1).getCards().get(j));
 //					}
 				}
+//				System.out.println(playerList.get(1).getState());
 			}	
 			
 			String dealersCard = new String(makeDealersCard());
 			String guestsCard = new String(makeGuestCard());
-			String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
 			
-			if(playerList.get(0).getState()==State.STAY && playerList.get(1).getState()==State.STAY){
-				System.out.println("dasdsa");
+			
+			if(playerList.get(0).getState()==State.BLACKJACK )
+				result = "\t\t\tBlackJack! You win!";
+			else if(playerList.get(1).getState()==State.BLACKJACK )
+				result = "\t\t\tBlackJack! You lose!";
+			else if(playerList.get(0).getState()!=State.PLAYING && playerList.get(1).getState()!=State.PLAYING){
+//				System.out.println("dasdsa");
 				result = new String(makeResultStr());
+				dCardResult = new String(makeDCardResultStr());
 			}
 
 			
@@ -104,7 +112,7 @@ public class BlackJack {
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 			System.out.printf("*%s*\n" , result);
-			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+			System.out.printf("*%s*\n" , dCardResult);
 			System.out.printf("*\t\t\t\t\t\t\t\t\tYour score : %d\t\t*\n" , guest.getHands());//점수표시
 			System.out.printf("*\t\t\t\t\t\t\t\t\tstate : %s\t\t*\n" , guest.getState());//상태표시
 			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
@@ -129,16 +137,69 @@ public class BlackJack {
 		return returnVal;
 		
 	}
-	private String makeResultStr() {
-		String result =  "\tresult : You ooo" + "\t\tdealer's card : " ;
+	private String makeDCardResultStr() {
+		String result =  "" ;
+		
+		result+="\tdealer's card : " ;
 		
 		int size = dealer.getCards().size();
-		for (int i = 1; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 //			dCard+=" ■";
 			result+=dealer.getCards().get(i);
 		}
+		if(size>10)
+			result+="";
+		else if(size>9)
+			result+="\t\t\t\t\t";
+		else if(size>8)
+			result+="\t\t\t\t\t\t";
+		else if(size>7)
+			result+="\t\t\t\t\t\t";
+		else if(size>6)
+			result+="\t\t\t\t\t\t";
+		else if(size>5)
+			result+="\t\t\t\t\t\t\t";
+		else if(size>4)
+			result+="\t\t\t\t\t\t\t";
+		else if(size>3)
+			result+="\t\t\t\t\t\t\t\t";
+		else if(size>2)
+			result+="\t\t\t\t\t\t\t\t";
+		else
+			result+="\t\t\t\t\t\t\t\t\t";
 		
-		result=result + "\t\tscore : " + dealer.getHands() + "\t";
+		return result;
+	}
+	private String makeResultStr() {
+		String result =  "\tresult : " ;
+		
+		int dScore = dealer.getHands();
+		int gScore = guest.getHands();
+		
+		if(guest.getState()==State.BURST)
+			result += "You lose!";
+		else{
+			int dGap = 21-dScore;
+			int gGap = 21-gScore;
+			if(dGap<0)
+				result += "You win!";
+			else if(dGap - gGap>0)
+				result += "You win!";
+			else if(dGap - gGap<0)
+				result += "You lose!";
+			else
+				result += "Draw~~~!";
+		}
+		
+//		result+="\t\tdealer's card : " ;
+//		
+//		int size = dealer.getCards().size();
+//		for (int i = 0; i < size; i++) {
+////			dCard+=" ■";
+//			result+=dealer.getCards().get(i);
+//		}
+		
+		result=result + "\tDealer's score : " + dealer.getHands() + "\t\t\t\t\t\t";
 		
 		return result;
 	}
