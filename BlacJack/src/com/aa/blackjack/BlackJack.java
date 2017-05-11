@@ -13,17 +13,17 @@ import com.aa.rule.consts.State;
 public class BlackJack {
 		ArrayList<Player> playerList = new ArrayList<Player>();
 	Dealer dealer;
-	Guest guest;
+//	Guest guest;
 	CardCase cardCase;
 	boolean isKeepGoing = true;
 	int returnVal = 0;
 
-	public int play(){				//반환 값 0: 정상 종료 	1: 새로운 게임
+	public int play(Guest guest){				//반환 값 0: 정상 종료 	1: 새로운 게임
 		
 		@SuppressWarnings("unused")
 		Scanner scan = new Scanner(System.in);
 		String command = "";
-		guest= new Guest();
+//		guest= new Guest();
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
 		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
@@ -93,11 +93,18 @@ public class BlackJack {
 			String guestsCard = new String(makeGuestCard());
 			
 			
-			if(playerList.get(0).getState()==State.BLACKJACK )
+			if(playerList.get(0).getState()==State.BLACKJACK ){
+				
 				result = "\t\t\tBlackJack! You win!";
-			else if(playerList.get(1).getState()==State.BLACKJACK )
+				guest.setBudget(guest.getBudget() + guest.getBetting()*2);
+				guest.setBetting(0);
+				
+			}else if(playerList.get(1).getState()==State.BLACKJACK ){
+				
 				result = "\t\t\tBlackJack! You lose!";
-			else if(playerList.get(0).getState()!=State.PLAYING && playerList.get(1).getState()!=State.PLAYING){
+				guest.setBetting(0);
+				
+			}else if(playerList.get(0).getState()!=State.PLAYING && playerList.get(1).getState()!=State.PLAYING){
 //				System.out.println("dasdsa");
 				result = new String(makeResultStr());
 				dCardResult = new String(makeDCardResultStr());
@@ -123,7 +130,8 @@ public class BlackJack {
 //			for (Player player : playerList) {
 //				game(player);
 //			}
-			System.out.println("Hit(H/HIT) Stay(S/Stay):");
+			System.out.printf("Your budget : %d , Betting : %d" ,guest.getBudget() , guest.getBetting());
+			System.out.printf("\t\t\tHit(H/HIT) Stay(S/Stay):\n");
 			
 			
 			
@@ -158,15 +166,15 @@ public class BlackJack {
 		else if(size>6)
 			result+="\t\t\t\t\t\t";
 		else if(size>5)
-			result+="\t\t\t\t\t\t\t";
+			result+="\t\t\t\t\t\t";
 		else if(size>4)
 			result+="\t\t\t\t\t\t\t";
 		else if(size>3)
-			result+="\t\t\t\t\t\t\t\t";
+			result+="\t\t\t\t\t\t\t";
 		else if(size>2)
 			result+="\t\t\t\t\t\t\t\t";
 		else
-			result+="\t\t\t\t\t\t\t\t\t";
+			result+="\t\t\t\t\t\t\t\t";
 		
 		return result;
 	}
@@ -174,21 +182,30 @@ public class BlackJack {
 		String result =  "\tresult : " ;
 		
 		int dScore = dealer.getHands();
-		int gScore = guest.getHands();
+		int gScore = playerList.get(0).getHands();
 		
-		if(guest.getState()==State.BURST)
+		if(playerList.get(0).getState()==State.BURST){
 			result += "You lose!";
-		else{
+			((Guest)playerList.get(0)).setBetting(0);
+		}else{
 			int dGap = 21-dScore;
 			int gGap = 21-gScore;
-			if(dGap<0)
+			if(dGap<0){
 				result += "You win!";
-			else if(dGap - gGap>0)
+				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting()*3);
+				((Guest)playerList.get(0)).setBetting(0);
+			}else if(dGap - gGap>0){
 				result += "You win!";
-			else if(dGap - gGap<0)
+				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting()*3);
+				((Guest)playerList.get(0)).setBetting(0);
+			}else if(dGap - gGap<0){
 				result += "You lose!";
-			else
+				((Guest)playerList.get(0)).setBetting(0);
+			}else{
 				result += "Draw~~~!";
+				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting());
+				((Guest)playerList.get(0)).setBetting(0);
+			}
 		}
 		
 //		result+="\t\tdealer's card : " ;
@@ -223,11 +240,11 @@ public class BlackJack {
 	}
 	
 	private String makeGuestCard() {
-		String gCard = "" +guest.getCards().get(0);
-		int size = guest.getCards().size();
+		String gCard = "" +playerList.get(0).getCards().get(0);
+		int size = playerList.get(0).getCards().size();
 		
 		for (int i = 1; i < size; i++) {
-			gCard+=guest.getCards().get(i);
+			gCard+=playerList.get(0).getCards().get(i);
 		}
 		
 		if(size>10)
