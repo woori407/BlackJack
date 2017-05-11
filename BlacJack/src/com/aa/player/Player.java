@@ -36,10 +36,10 @@ public abstract class Player implements InterfacePlayer{
 		hands = sum;
 	}
 
+	
+	public abstract int nextAction(int choice);		//0 힛 1 스테이 2 더블
 
-	public abstract int nextAction(int choice);
-
-
+	
 	public State getState() {
 		return state;
 	}
@@ -67,7 +67,7 @@ public abstract class Player implements InterfacePlayer{
 		}
 		return isc;
 	}
-
+	
 	public void clearHands(){
 		cards.clear();
 		hands=0;
