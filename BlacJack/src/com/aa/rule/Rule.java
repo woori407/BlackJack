@@ -39,6 +39,7 @@ public class Rule {
 				break;
 			case 2:
 				//double down
+				doubleDown(p);
 //				break;
 			default:
 				//예외처리
@@ -50,6 +51,10 @@ public class Rule {
 		}
 	}
 
+	private static void doubleDown(Player p) {
+		hit(p);
+		stay(p);
+	}
 	//
 	private static void hit(Player p){
 		p.setCards(cardCase.drawCard());

@@ -15,6 +15,11 @@ public class Guest extends Player{
 	public Guest() {
 		super();
 	}
+	
+	public void doubleBetting(){
+		budget -= betting;
+		betting *=2;
+	}
 
 	public void betting(){
 		System.out.printf("How much would you bet(you budget : %d) :" , budget);
@@ -31,7 +36,7 @@ public class Guest extends Player{
 
 	@Override
 	public int nextAction(int choice){
-		//0:힛트	1:스테이
+		//0:힛트	1:스테이 
 //		int choice = -1;
 		
 		
