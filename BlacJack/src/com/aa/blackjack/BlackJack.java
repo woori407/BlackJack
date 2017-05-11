@@ -127,9 +127,9 @@ public class BlackJack {
 		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
 
 		if(p.getState()==State.PLAYING)
-			System.out.println("Hit(H/HIT) Stay(S/Stay):");
+			System.out.println("\t\tHit(H/HIT) Stay(S/Stay) DoubleDown(D/Double):");
 		else if(end && dealer.getState()!=State.PLAYING)
-			System.out.println("new Game?");		
+			System.out.println("\t\tnew Game?");		
 	}
 	
 	private String makeDCardResultStr() {
@@ -267,7 +267,15 @@ public class BlackJack {
 		}else if(command.trim().compareToIgnoreCase("stay")==0 || command.trim().compareToIgnoreCase("s")==0){
 			if(p.getState()==State.PLAYING)
 				Rule.respondPlayer(p,p.nextAction(1));
-
+		}else if(command.trim().compareToIgnoreCase("double")==0 || command.trim().compareToIgnoreCase("d")==0){
+			if(p.getState()==State.PLAYING && p.getCards().size()==2){
+				((Guest)p).doubleBetting();
+				Rule.respondPlayer(p,p.nextAction(2));
+			}
+			else{
+				System.out.println("you can not doubledown now");
+				index--;
+			}
 		}
 	}
 
