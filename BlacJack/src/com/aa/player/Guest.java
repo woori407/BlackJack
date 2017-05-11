@@ -15,6 +15,11 @@ public class Guest extends Player{
 	public Guest() {
 		super();
 	}
+	
+	public void doubleBetting(){
+		budget-=betting;
+		betting*=2;
+	}
 
 	public void betting(){
 		System.out.printf("How much would you bet(you budget : %d) :" , budget);
