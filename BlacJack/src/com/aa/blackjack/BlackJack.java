@@ -119,14 +119,14 @@ public class BlackJack {
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 		if(playerList.size()>2){
 			System.out.print("*");
-			int i = 0;
-			for (; i < playerList.size(); i++) {
-				System.out.printf("\tsplit%d:%d\t", i+1, playerList.get(i).getHands());
+			int i;
+			for (i = 0; i < playerList.size(); i++) {
+				System.out.printf("\tsplit%d: %d\t", i+1, playerList.get(i).getHands());
 			}
 			for (; i < 4; i++) {
 				System.out.printf("\t\t\t");
 			}
-			System.out.println("*\n");
+			System.out.printf("*\n");
 		}
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 		System.out.printf("*%s*\n" , result);
@@ -190,25 +190,25 @@ public class BlackJack {
 
 		if(guest.getState()==State.BURST){
 			result += "You lose!";
-			guest.setBetting(0);
+//			guest.setBetting(0);
 		}else{
 			int dGap = 21-dScore;
 			int gGap = 21-gScore;
 			if(dGap<0){
 				result += "You win!";
-				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
-				guest.setBetting(0);
+//				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+//				guest.setBetting(0);
 			}else if(dGap - gGap>0){
 				result += "You win!";
-				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+//				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
 				guest.setBetting(0);
 			}else if(dGap - gGap<0){
 				result += "You lose!";
-				guest.setBetting(0);
+//				guest.setBetting(0);
 			}else{
 				result += "Draw~~~!";
-				guest.setBudget(guest.getBudget() + guest.getBetting());
-				guest.setBetting(0);
+//				guest.setBudget(guest.getBudget() + guest.getBetting());
+//				guest.setBetting(0);
 			}
 		}
 
@@ -306,8 +306,13 @@ public class BlackJack {
 	}
 
 	public static void clearScreen() {
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 40; i++)
 			System.out.println("");
+	}
+	
+	public void guestBudgetControl(Guest guest, int multi){
+		guest.setBudget(guest.getBudget() + guest.getBetting()*multi);
+		guest.setBetting(0);
 	}
 
 }
