@@ -29,8 +29,6 @@ public class BlackJack {
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
 		index = 0;
-//		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
-//		String dCardResult = "\t\t\t\t\t\t\t\t\t\t\t\t";
 
 		//1.셔플 및 게임 초기화
 		cardCase.shuffleDeck();
@@ -122,9 +120,6 @@ public class BlackJack {
 		System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
 		System.out.printf("*************************************************************************************************\n");
 
-		//		for (Player player : playerList) {
-		//			game(player);
-		//		}
 		if(p.getState()==State.PLAYING)
 			System.out.println("Hit(H/HIT) Stay(S/Stay):");
 		else if(end && dealer.getState()!=State.PLAYING)
@@ -185,14 +180,6 @@ public class BlackJack {
 				result += "Draw~~~!";
 		}
 
-		//		result+="\t\tdealer's card : " ;
-		//		
-		//		int size = dealer.getCards().size();
-		//		for (int i = 0; i < size; i++) {
-		////			dCard+=" ■";
-		//			result+=dealer.getCards().get(i);
-		//		}
-
 		result=result + "\tDealer's score : " + dealer.getHands() + "[" + dealer.getState() + "]" + "\t\t\t\t\t";
 
 		return result;
@@ -203,7 +190,6 @@ public class BlackJack {
 
 		for (int i = 1; i < size; i++) {
 			dCard+=" ■";
-			//			dCard+=dealer.getCards().get(i);
 		}
 		if(size>9)
 			dCard+="\t\t\t\t\t\t";
@@ -248,14 +234,6 @@ public class BlackJack {
 		return gCard;
 	}
 
-
-
-	//트루면 게임 끝 false면 다시 게임
-	//	private boolean isFinalGame(String yN) {
-	//		// TODO Auto-generated method stub
-	//		boolean isc = false;
-	//		return isc;
-	//	}
 
 	private void interpretCommand(Player p, String command) {
 
