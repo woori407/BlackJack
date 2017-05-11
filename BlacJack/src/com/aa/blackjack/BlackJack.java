@@ -122,7 +122,7 @@ public class BlackJack {
 		if(playerList.size()>2){
 			System.out.print("*");
 			int i;
-			for (i = 0; i < playerList.size(); i++) {
+			for (i = 0; i < playerList.size()-1; i++) {
 				System.out.printf("\tsplit%d: %d\t", i+1, playerList.get(i).getHands());
 			}
 			for (; i < 4; i++) {
@@ -138,17 +138,18 @@ public class BlackJack {
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 		System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
 		System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
+		System.out.printf("*\t\t\t\t\t\t\tYour budget : %d\tBetting : %d\t*\n" ,p.getBudget() , p.getBetting());
 		System.out.printf("*************************************************************************************************\n");
-		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
+		
 
 		if(p.getCards().size()==2&&p.getCards().get(0).getValue()==p.getCards().get(1).getValue()&&p.getBudget()>p.getBetting()&&p.getState()==State.PLAYING)
 			System.out.println("Hit(H/HIT) Split(SP/Split) DoubleDown(D/Double) Stay(S/Stay):");
 		else if(p.getCards().size()==2&&p.getState()==State.PLAYING&&((Guest)p).getBudget()>((Guest)p).getBetting())
-			System.out.println("\t\tHit(H/HIT) Stay(S/Stay) DoubleDown(D/Double):");
+			System.out.println("Hit(H/HIT) Stay(S/Stay) DoubleDown(D/Double):");
 		else if(p.getState()==State.PLAYING)
 			System.out.println("Hit(H/HIT) Stay(S/Stay):");
 		else if(end && dealer.getState()!=State.PLAYING)
-			System.out.println("\t\tnew Game?");		
+			System.out.println("new Game?");		
 	}
 	
 	private String makeDCardResultStr() {
