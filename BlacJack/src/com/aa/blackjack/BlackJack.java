@@ -100,10 +100,12 @@ public class BlackJack {
 			result = "\t\t\tBlackJack! You win!";
 //			p.setBudget(p.getBudget() + p.getBetting()*2);
 //			p.setBetting(0);
+//			guestBudgetControl(p,2);
 		}
 		else if(dealer.getState()==State.BLACKJACK ){
 //			result = "\t\t\tBlackJack! You lose!";
 //			p.setBetting(0);
+//			guestBudgetControl(p,0);
 		}
 		else if(end && dealer.getState()!=State.PLAYING){
 			result = new String(makeResultStr(p));
@@ -179,25 +181,23 @@ public class BlackJack {
 
 		if(guest.getState()==State.BURST){
 			result += "You lose!";
-			guest.setBetting(0);
+			guestBudgetControl(guest,0);
 		}else{
 			int dGap = 21-dScore;
 			int gGap = 21-gScore;
 			if(dGap<0){
 				result += "You win!";
-				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
-				guest.setBetting(0);
+				guestBudgetControl(guest,3);
+				
 			}else if(dGap - gGap>0){
 				result += "You win!";
-				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
-				guest.setBetting(0);
+				guestBudgetControl(guest,3);
 			}else if(dGap - gGap<0){
 				result += "You lose!";
-				guest.setBetting(0);
+				guestBudgetControl(guest,0);
 			}else{
 				result += "Draw~~~!";
-				guest.setBudget(guest.getBudget() + guest.getBetting());
-				guest.setBetting(0);
+				guestBudgetControl(guest,1);
 			}
 		}
 
@@ -297,6 +297,11 @@ public class BlackJack {
 	public static void clearScreen() {
 		for (int i = 0; i < 80; i++)
 			System.out.println("");
+	}
+	
+	public void guestBudgetControl(Guest guest, int multi){
+		guest.setBudget(guest.getBudget() + guest.getBetting()*multi);
+		guest.setBetting(0);
 	}
 
 }
