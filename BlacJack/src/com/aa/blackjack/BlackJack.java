@@ -8,6 +8,7 @@ import com.aa.player.Dealer;
 import com.aa.player.Guest;
 import com.aa.player.Player;
 import com.aa.rule.Rule;
+import com.aa.rule.consts.Match;
 import com.aa.rule.consts.State;
 
 public class BlackJack {
@@ -43,7 +44,6 @@ public class BlackJack {
 			Rule.dealInitialCards(player);
 		}
 
-		//		while(isKeepGoing){	
 		for (; index < playerList.size(); index++) {
 			Guest p;
 			if(index==playerList.size()-1)
@@ -65,10 +65,12 @@ public class BlackJack {
 				while(dealer.getState()==State.PLAYING) {
 					Rule.respondPlayer(dealer,dealer.nextAction(-1));
 				}
-				//배팅결과 금액 관리
-//				for (int j = 0; j < index; j++) {
-//					int prize = 0;
-//				}
+				//split 결과 금액 관리
+				int prize=0;
+				for (int j = 0; j < index; j++) {
+					prize += p.getState()==State.BLACKJACK?p.getBetting()*2:Rule.isWin(p)==Match.WIN?p.getBetting()*3:Rule.isWin(p)==Match.DRAW?p.getBetting():0;
+				}
+				guest.setBudget(guest.getBudget()+prize);
 			}	
 
 			print(p, end);
@@ -96,12 +98,12 @@ public class BlackJack {
 
 		if(p.getState()==State.BLACKJACK ){
 			result = "\t\t\tBlackJack! You win!";
-			p.setBudget(p.getBudget() + p.getBetting()*2);
-			p.setBetting(0);
+//			p.setBudget(p.getBudget() + p.getBetting()*2);
+//			p.setBetting(0);
 		}
 		else if(dealer.getState()==State.BLACKJACK ){
-			result = "\t\t\tBlackJack! You lose!";
-			p.setBetting(0);
+//			result = "\t\t\tBlackJack! You lose!";
+//			p.setBetting(0);
 		}
 		else if(end && dealer.getState()!=State.PLAYING){
 			result = new String(makeResultStr(p));
@@ -126,8 +128,12 @@ public class BlackJack {
 		System.out.printf("*************************************************************************************************\n");
 		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
 
-		if(p.getState()==State.PLAYING)
+		if(p.getCards().size()==2&&p.getCards().get(0).getValue()==p.getCards().get(1).getValue()&&p.getBudget()>p.getBetting()&&p.getState()==State.PLAYING)
+			System.out.println("Hit(H/HIT) Split(SP/Split) Stay(S/Stay):");
+		else if(p.getCards().size()==2&&p.getState()==State.PLAYING)
 			System.out.println("\t\tHit(H/HIT) Stay(S/Stay) DoubleDown(D/Double):");
+		else if(p.getState()==State.PLAYING)
+			System.out.println("Hit(H/HIT) Stay(S/Stay):");
 		else if(end && dealer.getState()!=State.PLAYING)
 			System.out.println("\t\tnew Game?");		
 	}
@@ -264,6 +270,11 @@ public class BlackJack {
 				index--;
 			}
 
+		}else if(command.trim().compareToIgnoreCase("split")==0 || command.trim().compareToIgnoreCase("sp")==0){
+			if(p.getState()==State.PLAYING){
+				Rule.split(playerList, index--);
+			}
+			
 		}else if(command.trim().compareToIgnoreCase("stay")==0 || command.trim().compareToIgnoreCase("s")==0){
 			if(p.getState()==State.PLAYING)
 				Rule.respondPlayer(p,p.nextAction(1));
@@ -276,6 +287,10 @@ public class BlackJack {
 				System.out.println("you can not doubledown now");
 				index--;
 			}
+		}else{
+			System.out.println("잘못된 입력입니다.");
+			if(index!=playerList.size()-1)
+				index--;
 		}
 	}
 
