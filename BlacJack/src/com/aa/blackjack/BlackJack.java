@@ -11,12 +11,14 @@ import com.aa.rule.Rule;
 import com.aa.rule.consts.State;
 
 public class BlackJack {
-		ArrayList<Player> playerList = new ArrayList<Player>();
+	ArrayList<Player> playerList = new ArrayList<Player>();
 	Dealer dealer;
 //	Guest guest;
 	CardCase cardCase;
 	boolean isKeepGoing = true;
 	int returnVal = 0;
+	int index;
+	boolean end;
 
 	public int play(Guest guest){				//반환 값 0: 정상 종료 	1: 새로운 게임
 		
@@ -26,9 +28,8 @@ public class BlackJack {
 //		guest= new Guest();
 		dealer = Dealer.getInstance();
 		cardCase = CardCase.getInstance();
-		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
-		String dCardResult = "\t\t\t\t\t\t\t\t\t\t\t\t";
-		
+		index = 0;
+
 		//1.셔플 및 게임 초기화
 		cardCase.shuffleDeck();
 		playerList.clear();
@@ -41,118 +42,104 @@ public class BlackJack {
 		for (Player player : playerList) {
 			Rule.dealInitialCards(player);
 		}
-		
-		while(isKeepGoing){	
-			
-			
-			//3...
-//			for (Player player : playerList) {
-//				game(player);
-//			}
-			
-			//게임 종료될 즈음
-//			System.out.println("게임을 계속 진행 하시겠습니까?(Y/N)");
-//			yN = scan.nextLine();
-//			if(isFinalGame(yN))//트루면 게임 끝 false면 다시 게임
-//				break;
-//			else
-//				continue;
-			
-			//오픈카드를 보여주고 히든 카드 수를 명시적으로 표현
-			
 
-			
-			
-//			String dealersCard = "" + rule.getDealer().getCards().get(0);
-//			String guestsCard = "" + rule.getGuest().getCards().get(0);
-			
-//			for (int i = 0; i < rule.getDealer().getCards().size()-1; i++) {
-//				dealersCard+=" ■";
-//			}
-//			for (int i = 0; i < rule.getGuest().getCards().size()-1; i++) {
-//				guestsCard+=" □";
-//			}
-//			dealersCard+="\t\t\t\t\t\t\t\t\t";
-//			guestsCard+="\t\t\t\t\t\t\t\t\t";
-//			String temp =  "" + rule.getGuest().getCards().get(0) + " ■ ■ ■ ■" + "\t\t\t\t\t\t\t\t\t";
-			
-			if(playerList.get(0).getState()!=State.PLAYING){
-//				System.out.println("dsds");
-				while(playerList.get(1).getState()==State.PLAYING) {
-					Rule.respondPlayer(playerList.get(1),playerList.get(1).nextAction(-1));
-//					System.out.println(playerList.get(1).getHands());
-//					System.out.println(playerList.get(1).getState());
-//					for (int j = 0; j < playerList.get(1).getCards().size(); j++) {
-//						System.out.println(playerList.get(1).getCards().get(j));
-//					}
+		//		while(isKeepGoing){	
+		for (; index < playerList.size(); index++) {
+			Guest p;
+			if(index==playerList.size()-1)
+				p = (Guest)playerList.get(index-1);
+			else
+				p = (Guest)playerList.get(index);
+			//모든 게스트가 PLAYING 상태가 아님을 확인하는 변수. true:모든 게스트 state!=PLAYING
+			end = true;
+
+			//		}				
+			for (int j = index; j < playerList.size()-1; j++) {
+				if(playerList.get(j).getState()==State.PLAYING){
+					end=false;
+					break;
 				}
-//				System.out.println(playerList.get(1).getState());
-			}	
-			
-			String dealersCard = new String(makeDealersCard());
-			String guestsCard = new String(makeGuestCard());
-			
-			
-			if(playerList.get(0).getState()==State.BLACKJACK ){
-				
-				result = "\t\t\tBlackJack! You win!";
-				guest.setBudget(guest.getBudget() + guest.getBetting()*2);
-				guest.setBetting(0);
-				
-			}else if(playerList.get(1).getState()==State.BLACKJACK ){
-				
-				result = "\t\t\tBlackJack! You lose!";
-				guest.setBetting(0);
-				
-			}else if(playerList.get(0).getState()!=State.PLAYING && playerList.get(1).getState()!=State.PLAYING){
-//				System.out.println("dasdsa");
-				result = new String(makeResultStr());
-				dCardResult = new String(makeDCardResultStr());
 			}
+			//
+			if(end){
+				while(dealer.getState()==State.PLAYING) {
+					Rule.respondPlayer(dealer,dealer.nextAction(-1));
+				}
+				//배팅결과 금액 관리
+//				for (int j = 0; j < index; j++) {
+//					int prize = 0;
+//				}
+			}	
 
-			
-			System.out.printf("*************************************************************************************************\n");
-			System.out.printf("*\t\t\t\tWelcome to BlackJack Game!\t\t\t\t\t*\n");
-			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*\tDealer's card : %s*\n" , dealersCard);//딜러의 카드
-			System.out.printf("*\tYour card : %s*\n" , guestsCard);//게스트의  카드
-			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*%s*\n" , result);
-			System.out.printf("*%s*\n" , dCardResult);
-			System.out.printf("*\t\t\t\t\t\t\t\t\tYour score : %d\t\t*\n" , guest.getHands());//점수표시
-			System.out.printf("*\t\t\t\t\t\t\t\t\tstate : %s\t\t*\n" , guest.getState());//상태표시
-			System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
-			System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
-			System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
-			System.out.printf("*************************************************************************************************\n");
-			
-//			for (Player player : playerList) {
-//				game(player);
-//			}
-			System.out.printf("Your budget : %d , Betting : %d" ,guest.getBudget() , guest.getBetting());
-			System.out.printf("\t\t\tHit(H/HIT) Stay(S/Stay):\n");
-			
-			
-			
-			command = scan.nextLine();			//사용자의 명령어를 받음
-			interpretCommand(command);			//사용자의 명령어를 해석함
-			
+			print(p, end);
+
+			if(p.getState()==State.PLAYING){
+				command = scan.nextLine();			//사용자의 명령어를 받음
+				interpretCommand(p, command);			//사용자의 명령어를 해석함
+			} else if(index==playerList.size()-1){
+				command = scan.nextLine();			//사용자의 명령어를 받음
+				interpretCommand(p, command);			//사용자의 명령어를 해석함
+			}
 			clearScreen();
-						
+
 		}
-		
+
 		return returnVal;
-		
+
 	}
+	private void print(Guest p, boolean end) {
+		String result = "\t\t\t\t\t\t\t\t\t\t\t\t";
+		String dCardResult = "\t\t\t\t\t\t\t\t\t\t\t\t";
+		String dealersCard = new String(makeDealersCard());
+		String guestsCard = new String(makeGuestCard(p));
+
+
+		if(p.getState()==State.BLACKJACK ){
+			result = "\t\t\tBlackJack! You win!";
+			p.setBudget(p.getBudget() + p.getBetting()*2);
+			p.setBetting(0);
+		}
+		else if(dealer.getState()==State.BLACKJACK ){
+			result = "\t\t\tBlackJack! You lose!";
+			p.setBetting(0);
+		}
+		else if(end && dealer.getState()!=State.PLAYING){
+			result = new String(makeResultStr(p));
+			dCardResult = new String(makeDCardResultStr());
+		}
+
+
+		System.out.printf("*************************************************************************************************\n");
+		System.out.printf("*\t\t\t\tWelcome to BlackJack Game!\t\t\t\t\t*\n");
+		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+		System.out.printf("*\tDealer's card : %s*\n" , dealersCard);//딜러의 카드
+		System.out.printf("*\tYour card : %s*\n" , guestsCard);//게스트의  카드
+		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+		System.out.printf("*%s*\n" , result);
+		System.out.printf("*%s*\n" , dCardResult);
+		System.out.printf("*\t\t\t\t\t\t\t\t\tYour score : %d\t\t*\n" , p.getHands());//점수표시
+		System.out.printf("*\t\t\t\t\t\t\t\t\tstate : %s\t\t*\n" , p.getState());//상태표시
+		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+		System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
+		System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
+		System.out.printf("*************************************************************************************************\n");
+		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
+
+		if(p.getState()==State.PLAYING)
+			System.out.println("Hit(H/HIT) Stay(S/Stay):");
+		else if(end && dealer.getState()!=State.PLAYING)
+			System.out.println("new Game?");		
+	}
+	
 	private String makeDCardResultStr() {
 		String result =  "" ;
-		
+
 		result+="\tdealer's card : " ;
-		
+
 		int size = dealer.getCards().size();
 		for (int i = 0; i < size; i++) {
-//			dCard+=" ■";
+			//			dCard+=" ■";
 			result+=dealer.getCards().get(i);
 		}
 		if(size>10)
@@ -175,58 +162,49 @@ public class BlackJack {
 			result+="\t\t\t\t\t\t\t\t";
 		else
 			result+="\t\t\t\t\t\t\t\t";
-		
 		return result;
 	}
-	private String makeResultStr() {
+	
+	private String makeResultStr(Guest guest) {
 		String result =  "\tresult : " ;
-		
+
 		int dScore = dealer.getHands();
-		int gScore = playerList.get(0).getHands();
-		
-		if(playerList.get(0).getState()==State.BURST){
+		int gScore = guest.getHands();
+
+		if(guest.getState()==State.BURST){
 			result += "You lose!";
-			((Guest)playerList.get(0)).setBetting(0);
+			guest.setBetting(0);
 		}else{
 			int dGap = 21-dScore;
 			int gGap = 21-gScore;
 			if(dGap<0){
 				result += "You win!";
-				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting()*3);
-				((Guest)playerList.get(0)).setBetting(0);
+				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+				guest.setBetting(0);
 			}else if(dGap - gGap>0){
 				result += "You win!";
-				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting()*3);
-				((Guest)playerList.get(0)).setBetting(0);
+				guest.setBudget(guest.getBudget() + guest.getBetting()*3);
+				guest.setBetting(0);
 			}else if(dGap - gGap<0){
 				result += "You lose!";
-				((Guest)playerList.get(0)).setBetting(0);
+				guest.setBetting(0);
 			}else{
 				result += "Draw~~~!";
-				((Guest)playerList.get(0)).setBudget(((Guest)playerList.get(0)).getBudget() + ((Guest)playerList.get(0)).getBetting());
-				((Guest)playerList.get(0)).setBetting(0);
+				guest.setBudget(guest.getBudget() + guest.getBetting());
+				guest.setBetting(0);
 			}
 		}
-		
-//		result+="\t\tdealer's card : " ;
-//		
-//		int size = dealer.getCards().size();
-//		for (int i = 0; i < size; i++) {
-////			dCard+=" ■";
-//			result+=dealer.getCards().get(i);
-//		}
-		
-		result=result + "\tDealer's score : " + dealer.getHands() + "\t\t\t\t\t\t";
-		
+
+		result=result + "\tDealer's score : " + dealer.getHands() + "[" + dealer.getState() + "]" + "\t\t\t\t\t";
+
 		return result;
 	}
 	private String makeDealersCard() {
 		String dCard = "" + dealer.getCards().get(0);
 		int size = dealer.getCards().size();
-		
+
 		for (int i = 1; i < size; i++) {
 			dCard+=" ■";
-//			dCard+=dealer.getCards().get(i);
 		}
 		if(size>9)
 			dCard+="\t\t\t\t\t\t";
@@ -238,15 +216,15 @@ public class BlackJack {
 			dCard+="\t\t\t\t\t\t\t\t\t";
 		return dCard;
 	}
-	
-	private String makeGuestCard() {
-		String gCard = "" +playerList.get(0).getCards().get(0);
-		int size = playerList.get(0).getCards().size();
-		
+
+	private String makeGuestCard(Guest guest) {
+		String gCard = "" +guest.getCards().get(0);
+		int size = guest.getCards().size();
+
 		for (int i = 1; i < size; i++) {
-			gCard+=playerList.get(0).getCards().get(i);
+			gCard+=guest.getCards().get(i);
 		}
-		
+
 		if(size>10)
 			gCard+="";
 		else if(size>9)
@@ -271,17 +249,9 @@ public class BlackJack {
 		return gCard;
 	}
 
-	
 
-	//트루면 게임 끝 false면 다시 게임
-//	private boolean isFinalGame(String yN) {
-//		// TODO Auto-generated method stub
-//		boolean isc = false;
-//		return isc;
-//	}
-	
-	private void interpretCommand(String command) {
-		
+	private void interpretCommand(Player p, String command) {
+
 		if(command.trim().compareToIgnoreCase("quit")==0 || command.trim().compareToIgnoreCase("q")==0){
 			isKeepGoing = false;
 			returnVal = 0;		//0이면 정상종료
@@ -289,24 +259,21 @@ public class BlackJack {
 			isKeepGoing = false;
 			returnVal = 1;		//1이면 새 게임
 		}else if(command.trim().compareToIgnoreCase("hit")==0 || command.trim().compareToIgnoreCase("h")==0){
-			if(playerList.get(0).getState()==State.PLAYING)
-				Rule.respondPlayer(playerList.get(0),playerList.get(0).nextAction(0));
-			
+			if(p.getState()==State.PLAYING){
+				Rule.respondPlayer(p,p.nextAction(0));
+				index--;
+			}
+
 		}else if(command.trim().compareToIgnoreCase("stay")==0 || command.trim().compareToIgnoreCase("s")==0){
-			if(playerList.get(0).getState()==State.PLAYING)
-				Rule.respondPlayer(playerList.get(0),playerList.get(0).nextAction(1));
-			
+			if(p.getState()==State.PLAYING)
+				Rule.respondPlayer(p,p.nextAction(1));
+
 		}
 	}
-	
+
 	public static void clearScreen() {
 		for (int i = 0; i < 80; i++)
 			System.out.println("");
 	}
-	
-//	private void game(Player p , int choice){
-//		if(p.getState()==State.PLAYING) {
-//			Rule.respondPlayer(p, p.nextAction(choice));
-//		}
-//	}
+
 }
