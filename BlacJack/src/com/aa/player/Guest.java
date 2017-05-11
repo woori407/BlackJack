@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Guest extends Player{
-	
+
 	int budget = 1500;		//소지금
 	int betting = 0;		//현재 베팅 금액
 
-	
+
 
 	public Guest() {
 		super();
@@ -16,35 +16,46 @@ public class Guest extends Player{
 
 	public void betting(){
 		System.out.printf("How much would you bet(you budget : %d) :" , budget);
-		Scanner scan = new Scanner(System.in);
-		betting = scan.nextInt();
-		budget-=betting;
+		while (true) {
+			Scanner scan = new Scanner(System.in);
+			try {
+
+				betting = scan.nextInt();
+				if(betting>0){
+					budget-=betting;
+					break;
+				}
+			} catch (Exception e) {
+				System.out.println("잘못된 값을 입력하셨습니다");
+			
+			} 
+		}
 	}
 
 	@Override
 	public int nextAction(int choice){
 		//0:힛트	1:스테이 
-//		int choice = -1;
-		
-		
-//		Scanner scan = new Scanner(System.in);
+		//		int choice = -1;
 
-//		while(true){
-//			System.out.println("your card : " + cards+"score : "+hands);
-//			System.out.println("Hit을 원하시면 0입력 - Stay를 원하시면 1입력");
-//			choice = scan.nextInt();
-//			if(choice == 1){
-//				break;
-//			}else if(choice ==0){
-//				break;
-//			}else{
-//				System.out.println("잘못 입력하셨습니다.");
-//			}
-//		}
+
+		//		Scanner scan = new Scanner(System.in);
+
+		//		while(true){
+		//			System.out.println("your card : " + cards+"score : "+hands);
+		//			System.out.println("Hit을 원하시면 0입력 - Stay를 원하시면 1입력");
+		//			choice = scan.nextInt();
+		//			if(choice == 1){
+		//				break;
+		//			}else if(choice ==0){
+		//				break;
+		//			}else{
+		//				System.out.println("잘못 입력하셨습니다.");
+		//			}
+		//		}
 
 		return choice;
 	}
-	
+
 	public int getBudget() {
 		return budget;
 	}
@@ -52,7 +63,7 @@ public class Guest extends Player{
 	public void setBudget(int budget) {
 		this.budget = budget;
 	}
-	
+
 	public int getBetting() {
 		return betting;
 	}
