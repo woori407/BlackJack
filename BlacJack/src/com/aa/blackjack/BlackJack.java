@@ -117,6 +117,17 @@ public class BlackJack {
 		System.out.printf("*\tDealer's card : %s*\n" , dealersCard);//딜러의 카드
 		System.out.printf("*\tYour card : %s*\n" , guestsCard);//게스트의  카드
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
+		if(playerList.size()>2){
+			System.out.print("*");
+			int i = 0;
+			for (; i < playerList.size(); i++) {
+				System.out.printf("\tsplit%d:%d\t", i+1, playerList.get(i).getHands());
+			}
+			for (; i < 4; i++) {
+				System.out.printf("\t\t\t");
+			}
+			System.out.println("*\n");
+		}
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 		System.out.printf("*%s*\n" , result);
 		System.out.printf("*%s*\n" , dCardResult);
@@ -129,8 +140,8 @@ public class BlackJack {
 		System.out.printf("Your budget : %d , Betting : %d" ,p.getBudget() , p.getBetting());
 
 		if(p.getCards().size()==2&&p.getCards().get(0).getValue()==p.getCards().get(1).getValue()&&p.getBudget()>p.getBetting()&&p.getState()==State.PLAYING)
-			System.out.println("Hit(H/HIT) Split(SP/Split) Stay(S/Stay):");
-		else if(p.getCards().size()==2&&p.getState()==State.PLAYING)
+			System.out.println("Hit(H/HIT) Split(SP/Split) DoubleDown(D/Double) Stay(S/Stay):");
+		else if(p.getCards().size()==2&&p.getState()==State.PLAYING&&((Guest)p).getBudget()>((Guest)p).getBetting())
 			System.out.println("\t\tHit(H/HIT) Stay(S/Stay) DoubleDown(D/Double):");
 		else if(p.getState()==State.PLAYING)
 			System.out.println("Hit(H/HIT) Stay(S/Stay):");
@@ -279,7 +290,7 @@ public class BlackJack {
 			if(p.getState()==State.PLAYING)
 				Rule.respondPlayer(p,p.nextAction(1));
 		}else if(command.trim().compareToIgnoreCase("double")==0 || command.trim().compareToIgnoreCase("d")==0){
-			if(p.getState()==State.PLAYING && p.getCards().size()==2){
+			if(p.getState()==State.PLAYING && p.getCards().size()==2 && ((Guest)p).getBetting()<((Guest)p).getBudget()){
 				((Guest)p).doubleBetting();
 				Rule.respondPlayer(p,p.nextAction(2));
 			}
@@ -295,7 +306,7 @@ public class BlackJack {
 	}
 
 	public static void clearScreen() {
-		for (int i = 0; i < 80; i++)
+		for (int i = 0; i < 10; i++)
 			System.out.println("");
 	}
 

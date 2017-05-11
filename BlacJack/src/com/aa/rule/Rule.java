@@ -53,7 +53,9 @@ public class Rule {
 
 	private static void doubleDown(Player p) {
 		hit(p);
-		stay(p);
+		setPlayerState(p);
+		if(p.getState()==State.PLAYING)
+			stay(p);
 	}
 	//
 	private static void hit(Player p){
@@ -99,7 +101,7 @@ public class Rule {
 		if(p.getCards().size()==2 && p.getHands()==21 && p.hasAce()){
 			p.setState(State.BLACKJACK);
 		}
-		if(p.getHands()>21)
+		else if(p.getHands()>21)
 			p.setState(State.BURST);
 		else
 			p.setState(State.PLAYING);
