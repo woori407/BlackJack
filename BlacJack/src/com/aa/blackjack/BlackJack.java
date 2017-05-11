@@ -138,7 +138,7 @@ public class BlackJack {
 		System.out.printf("*\t\t\t\t\t\t\t\t\t\t\t\t*\n");
 		System.out.printf("*\t\t\t\t\t\t\t\t(n) or (new) : start new game\t*\n");
 		System.out.printf("*\t\t\t\t\t\t\t\t(q) or (quit) : close this game\t*\n");
-		System.out.printf("*\t\t\t\t\t\t\tYour budget : %d\tBetting : %d\t*\n" ,p.getBudget() , p.getBetting());
+		System.out.printf("*\t\t\t\t\t\t\tYour budget : %d\tBetting : %d\t*\n" ,((Guest)playerList.get(0)).getBudget() , p.getBetting());
 		System.out.printf("*************************************************************************************************\n");
 		
 

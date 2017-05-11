@@ -60,6 +60,7 @@ public class Rule {
 	//
 	private static void hit(Player p){
 		p.setCards(cardCase.drawCard());
+		setPlayerState(p);
 	}
 	
 	//승패결정. true면 승리 enum 승무패
