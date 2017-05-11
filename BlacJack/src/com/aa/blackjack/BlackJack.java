@@ -122,7 +122,7 @@ public class BlackJack {
 		if(playerList.size()>2){
 			System.out.print("*");
 			int i;
-			for (i = 0; i < playerList.size(); i++) {
+			for (i = 0; i < playerList.size()-1; i++) {
 				System.out.printf("\tsplit%d: %d\t", i+1, playerList.get(i).getHands());
 			}
 			for (; i < 4; i++) {
@@ -292,7 +292,7 @@ public class BlackJack {
 			if(p.getState()==State.PLAYING)
 				Rule.respondPlayer(p,p.nextAction(1));
 		}else if(command.trim().compareToIgnoreCase("double")==0 || command.trim().compareToIgnoreCase("d")==0){
-			if(p.getState()==State.PLAYING && p.getCards().size()==2 && ((Guest)p).getBetting()<((Guest)p).getBudget()){
+			if(p.getState()==State.PLAYING && p.getCards().size()==2 && ((Guest)p).getBetting()<=((Guest)p).getBudget()){
 				((Guest)p).doubleBetting();
 				Rule.respondPlayer(p,p.nextAction(2));
 			}
@@ -304,6 +304,8 @@ public class BlackJack {
 			System.out.println("잘못된 입력입니다.");
 			if(index!=playerList.size()-1)
 				index--;
+			else
+				returnVal=1;
 		}
 	}
 
