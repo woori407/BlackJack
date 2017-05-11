@@ -3,6 +3,7 @@ package com.aa.rule;
 import java.util.ArrayList;
 
 import com.aa.card.CardCase;
+import com.aa.card.CardOne;
 import com.aa.player.Dealer;
 import com.aa.player.Guest;
 import com.aa.player.Player;
@@ -20,6 +21,7 @@ public class Rule {
 	public static void dealInitialCards(Player p){
 		p.setCards(cardCase.drawCard());
 		p.setCards(cardCase.drawCard());
+		setPlayerState(p);
 	}
 	
 	//플레이어의 선택에 대한 룰 클래스의 응답
@@ -54,7 +56,7 @@ public class Rule {
 	}
 	
 	//승패결정. true면 승리 enum 승무패
-	private static Match isWin(Player p){
+	public static Match isWin(Player p){
 		//상태 비교해서 게스트 승패 결정. Player.getStates
 		Match isc = Match.LOSE;
 		State guestState = p.getState();
@@ -100,5 +102,23 @@ public class Rule {
 	
 	private static void stay(Player p){
 		p.setState(State.STAY);
+	}
+	
+	public static void split(ArrayList<Player> playerList, int index){
+		Guest current = (Guest)playerList.get(index);
+		CardOne card = current.split();
+		Guest splitOne = new Guest();
+		splitOne.setCards(card);
+		playerList.add(1,splitOne);
+		splitOne.setBetting(current.getBetting());
+		splitOne.setBudget(current.getBudget()-current.getBetting());
+		for (int i = 0; i <= index; i++) {
+			Guest g = (Guest)playerList.get(i);
+			g.setBudget(splitOne.getBudget());
+		}
+		current.setCards(cardCase.drawCard());
+		setPlayerState(current);
+		splitOne.setCards(cardCase.drawCard());
+		setPlayerState(splitOne);
 	}
 }

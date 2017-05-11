@@ -3,6 +3,8 @@ package com.aa.player;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.aa.card.CardOne;
+
 public class Guest extends Player{
 	
 	int budget = 1500;		//소지금
@@ -19,6 +21,12 @@ public class Guest extends Player{
 		Scanner scan = new Scanner(System.in);
 		betting = scan.nextInt();
 		budget-=betting;
+	}
+	
+	public CardOne split(){
+		CardOne splitCard = cards.get(1);
+		cards.remove(1);
+		return splitCard;
 	}
 
 	@Override
