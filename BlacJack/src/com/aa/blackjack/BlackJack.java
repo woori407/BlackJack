@@ -97,7 +97,7 @@ public class BlackJack {
 
 
 		if(p.getState()==State.BLACKJACK ){
-			result = "\t\t\tBlackJack! You win!";
+			result = "\t\t\tBlackJack! You win!\t\t\t\t\t\t\t";
 //			p.setBudget(p.getBudget() + p.getBetting()*2);
 //			p.setBetting(0);
 //			guestBudgetControl(p,2);
